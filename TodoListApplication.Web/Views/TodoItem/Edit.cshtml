@@ -1,0 +1,47 @@
+﻿@model TodoListApplication.BusinessLogic.DTOs.TodoItemDTO
+@{
+    ViewData["Title"] = "Edit Todo Item";
+}
+
+<div class="card card-body align-items-center rounded">
+    @using (Html.BeginForm("Edit", "TodoItem", FormMethod.Post))
+    {
+        <div class="container">
+            <div class="row">
+                <div class="form-group">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.Id)
+                    @Html.HiddenFor(m => m.CategoryId)
+
+                    @Html.LabelFor(m => m.Title)
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+
+                    @Html.LabelFor(m => m.IsCompleted)
+                    @Html.DropDownListFor(m => m.IsCompleted,
+                        new SelectList(
+                        new List<object> {
+                                new { value = true, text = "Completed"},
+                                new { value = false, text = "Not Completed"}
+                        },
+                        "value",
+                        "text"
+                        ), new { @class = "form-control" })
+
+                    @Html.LabelFor(m => m.Description)
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+
+                    @Html.LabelFor(m => m.StartDate)
+                    @Html.TextBoxFor(m => m.StartDate, new { @class = "datepicker form-control" })
+
+                    @Html.LabelFor(m => m.EndDate)
+                    @Html.TextBoxFor(m => m.EndDate, new { @class = "datepicker form-control" })
+
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" , class="btn btn-primary col-md-4">Save</button>
+        @Html.ActionLink("Back to List", "Details", "TodoCategory", new { id = Model.CategoryId }, htmlAttributes: new { @class = "btn btn-primary col-md-7" })
+    }
+</div>
+

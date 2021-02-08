@@ -1,0 +1,45 @@
+﻿@model TodoListApplication.BusinessLogic.DTOs.TodoItemDTO
+@{
+    ViewData["Title"] = "Create Todo Category";
+}
+
+@using (Html.BeginForm("Create", "TodoItem", FormMethod.Post))
+{
+    <div class="container">
+        <div class="row">
+            <div class="form-group">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.CategoryId)
+
+                @Html.LabelFor(m => m.Title)
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Title, "", htmlAttributes: new { @class = "text-danger" })<br />
+
+                @Html.LabelFor(m => m.Description)
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Description, "", htmlAttributes: new { @class = "text-danger", @placeholder = "Description" })<br />
+
+                @Html.LabelFor(m => m.StartDate)
+                @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd HH:mm}", new { @class = "datepicker form-control", @value = Model.StartDate, @onkeydown = "return false" })
+                @Html.ValidationMessageFor(m => m.StartDate, "", htmlAttributes: new { @class = "text-danger" })<br />
+
+                @Html.LabelFor(m => m.EndDate)
+                @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd HH:mm}", new { @class = "datepicker form-control", @value = Model.EndDate, @onkeydown = "return false" })
+                @Html.ValidationMessageFor(m => m.EndDate, "", htmlAttributes: new { @class = "text-danger" })<br />
+                <span id="warning"></span>
+
+                @Html.LabelFor(m => m.CategoryTitle)
+                @Html.TextBoxFor(m => m.CategoryTitle, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.CategoryTitle, "", htmlAttributes: new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" , class="btn btn-primary col-md-1">Save</button>
+    @Html.ActionLink("Back to List", "Details", "TodoCategory", new { id = Model.CategoryId }, htmlAttributes: new { @class = "btn btn-primary" })
+}
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<TodoListApplication.BusinessLogic.DTOs.TodoCategoryDTO>
+@{
+    ViewData["Title"] = "Todo List";
+}
+
+<p><a href="@Url.Action("Create", "TodoCategory")" class="btn btn-success">Add Category</a></p>
+
+<table class="table-secondary table-bordered text-center" id="category_table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Category Name</th>
+            <th>TO DO Item Count</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int i = 0; }
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>@(i += 1)</td>
+                <td>@item.Title</td>
+                <td>@item.TodoItemsCount</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select Action
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="@Url.Action("Details","TodoCategory", new { id = item.Id })"><i class="fas fa-info-circle"></i> Detail</a>
+                            <a class="dropdown-item" href="@Url.Action("Edit","TodoCategory", new { id = item.Id })"><i class="fas fa-edit"></i> Edit</a>
+                            <form asp-action="Delete" method="POST">
+                                <input type="hidden" name="Id" value="@item.Id" />
+                                <button type="submit" class="dropdown-item"><i class="fas fa-trash-alt"></i> Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

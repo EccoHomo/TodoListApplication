@@ -1,0 +1,110 @@
+﻿@model TodoListApplication.BusinessLogic.DTOs.TodoCategoryDTO
+@{
+    ViewData["Title"] = "Todo Detail";
+}
+
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>
+            @Model.Title
+        </h2>
+        <h5 class="text-muted text-">There are @Model.TodoItemsCount TO DO item(s) in this category.</h5>
+    </div>
+</div>
+
+<p><a href="@Url.Action("Create", "TodoItem", new { id = Model.Id, categoryTitle = Model.Title })" class="btn btn-success">Add Item</a></p>
+
+<table class="table-secondary table-bordered text-center" id="category_details_table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Completed</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="todoItemBody">
+        @{int i = 0; }
+        @foreach (var item in Model.TodoItems)
+        {
+
+            <tr data-item='@Json.Serialize(new { item.Id,item.RemainingTimeMs,item.Title})' id="todoItem_@item.Id">
+                <td>@(i += 1)</td>
+                <td>@item.Title</td>
+                <td>@item.CategoryTitle</td>
+                <td>@item.Description</td>
+                <td>
+                    @if (item.IsCompleted)
+                    {
+                        <i class="fas fa-check"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-times"></i>
+                    }
+                </td>
+                <td>@item.StartDate</td>
+                <td>@item.EndDate</td>
+                <td>@item.Created</td>
+                <td>@item.Updated</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select Action
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <form asp-action="ChangeCompleteStatus" asp-controller="TodoItem" method="POST">
+                                <input type="hidden" name="Id" value="@item.Id" />
+                                <button type="submit" class="dropdown-item">
+                                    @if (item.IsCompleted)
+                                    {
+                                        <text><i class="fas fa-times"></i> Mark as Uncomplete</text>
+                                    }
+                                    else
+                                    {
+                                        <text> <i class="fas fa-check"></i> Mark as Complete</text>
+                                    }
+                                </button>
+                            </form>
+                            <a class="dropdown-item" href="@Url.Action("Edit","TodoItem", new { id = item.Id })"><i class="fas fa-edit"></i> Edit</a>
+                            <form asp-action="Delete" asp-controller="TodoItem" method="POST">
+                                <input type="hidden" name="Id" value="@item.Id" />
+                                <input type="hidden" name="CategoryId" value="@item.CategoryId" />
+                                <button type="submit" class="dropdown-item"><i class="fas fa-trash-alt"></i> Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#todoItemBody>tr').each(function(){
+                var data = $(this).data('item');
+                var remainingTime = parseFloat(data.remainingTimeMs)
+                if (remainingTime>0) {
+                    var timeout = parseInt(remainingTime);
+                    setTimeout(function () {
+                        Swal.fire("There are overdued TO DO items.", data.title, "error")
+                    }, timeout)
+                }
+            });
+        });
+    </script>
+}

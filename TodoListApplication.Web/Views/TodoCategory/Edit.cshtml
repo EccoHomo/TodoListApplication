@@ -1,0 +1,22 @@
+﻿@model TodoListApplication.BusinessLogic.DTOs.TodoCategoryDTO
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+@using (Html.BeginForm("Edit", "TodoCategory", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    @Html.LabelFor(m => m.Title)
+    @Html.TextBoxFor(m => m.Title, new { @class = "form-control col-md-4" })
+    @Html.ValidationMessageFor(m => m.Title, "", htmlAttributes: new { @class = "text-danger" })<br />
+
+    <button type="submit" , class="btn btn-primary col-md-1">Update</button>
+    @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+
+}
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

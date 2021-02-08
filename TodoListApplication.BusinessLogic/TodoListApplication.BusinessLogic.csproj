@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TodoListApplication.Core\TodoListApplication.Core.csproj" />
+    <ProjectReference Include="..\TodoListApplication.DataAccess\TodoListApplication.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>

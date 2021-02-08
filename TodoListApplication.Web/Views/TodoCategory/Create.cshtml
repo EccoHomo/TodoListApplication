@@ -1,0 +1,20 @@
+﻿@model TodoListApplication.BusinessLogic.DTOs.TodoCategoryDTO
+@{
+    ViewData["Title"] = "Create Todo Category";
+}
+
+@using (Html.BeginForm("Create", "TodoCategory", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.TextBoxFor(m => m.Title, new { @class = "form-control col-md-4", @placeholder = "Category Name" })
+    @Html.ValidationMessageFor(m => m.Title, "", htmlAttributes: new { @class = "text-danger" })
+    <br />
+
+    <button type="submit" , class="btn btn-primary col-md-1">Save</button>
+    @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+}
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
